@@ -2,6 +2,11 @@
 #include <string.h>
 #include <stdlib.h>
 
+/*
+* Version 01: without using realloc
+* Version 02: with realloc (in progress)
+*/
+
 /* Split a string according to the delimiter */
 char **split(const char str[],const char delim[], int *length) {
 
