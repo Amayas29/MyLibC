@@ -35,7 +35,7 @@ char **split(const char str[],const char delim[], int *length) {
             head = tmp;
         else
             end->next = tmp;
-    
+
         tmp->str = strdup(sep);
         tmp->next = NULL;
         end = tmp;
@@ -58,13 +58,13 @@ char **split(const char str[],const char delim[], int *length) {
         head = tmp;
     }
 
-    return tab;   
+    return tab;
 }
 
 int main() {
 
     int len = 0;
-   
+
     char **tab = split("split_string_by_delimiter_test", "_" ,&len);
 
     for(int i = 0; i < len; i++) {

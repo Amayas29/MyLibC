@@ -16,7 +16,7 @@ char *getDayName(int day, int month, int year) {
 	if(day == 4) return "Wednesday";
 	if(day == 5) return "Thursday";
 	if(day == 6) return "Friday";
-	
+
 	return "Invalid day";
 }
 
