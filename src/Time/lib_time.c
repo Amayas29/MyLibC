@@ -2,13 +2,13 @@
 #include "lib_time.h"
 
 static int leap(int year);
-static int numberOfDays(int month, int year);
-static int firstJanuary(int year);
-static int numberOfDay(int day, int month, int year);
+static int number_of_days(int month, int year);
+static int first_january(int year);
+static int number_day_week(int day, int month, int year);
 
 char *get_day_name(int day, int month, int year) {
 
-	day = numberOfDay(day, month, year);
+	day = number_day_week(day, month, year);
 	if(day == 0) return "Saturday";
 	if(day == 1) return "Sunday";
 	if(day == 2) return "Monday";
@@ -39,7 +39,7 @@ static int leap(int year) {
 }
 
 /* Returns the number of day of a month */
-static int numberOfDays(int month, int year) {
+static int number_of_days(int month, int year) {
 
 	if(month == 1 || month == 3 || month == 5 || month == 7 || month == 8 || month == 10 || month == 12)
 		return 31;
@@ -51,7 +51,7 @@ static int numberOfDays(int month, int year) {
 }
 
 /* Returns the number of the weekday corresponding to January 1 */
-static int firstJanuary(int year) {
+static int first_january(int year) {
 
 	int a = 1900, j = 2;
 
@@ -62,12 +62,12 @@ static int firstJanuary(int year) {
 }
 
 /* Returns the number of the day of the week corresponding to the day passed in argument */
-static int numberOfDay(int day, int month, int year) {
+static int number_day_week(int day, int month, int year) {
 
-	int d = firstJanuary(year);
+	int d = first_january(year);
 
 	for(int m = 1; m < month; m++)
-		d = ((d + numberOfDays(m, year)) % 7);
+		d = ((d + number_of_days(m, year)) % 7);
 
 	d = (d + day) % 7 - 1;
 	return d;
