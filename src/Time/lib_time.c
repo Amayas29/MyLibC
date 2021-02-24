@@ -1,12 +1,12 @@
 #include <stdio.h>
-#include "getDayName.h"
+#include "lib_time.h"
 
 static int leap(int year);
 static int numberOfDays(int month, int year);
 static int firstJanuary(int year);
 static int numberOfDay(int day, int month, int year);
 
-char *getDayName(int day, int month, int year) {
+char *get_day_name(int day, int month, int year) {
 
 	day = numberOfDay(day, month, year);
 	if(day == 0) return "Saturday";
@@ -24,7 +24,7 @@ int main() {
 
 	int day = 29, month = 5, year = 2001;
 
-	printf("%s\n", getDayName(day, month, year));
+	printf("%s\n", get_day_name(day, month, year));
 
 	return 0;
 }

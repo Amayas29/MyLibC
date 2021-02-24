@@ -1,13 +1,8 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include "lib_string.h"
 
-/*
-* Version 01: without using realloc
-* Version 02: with realloc (in progress)
-*/
-
-/* Split a string according to the delimiter */
 char **split(const char str[],const char delim[], int *length) {
 
     if(!str || !delim) return NULL;
