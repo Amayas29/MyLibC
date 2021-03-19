@@ -1,14 +1,14 @@
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
 #include "lib_string.h"
 
-char **split(const char str[],const char delim[], int *length) {
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
-    if(!str || !delim) return NULL;
+char **split(const char str[], const char delim[], int *length) {
+    if (!str || !delim) return NULL;
 
     char *_str = strdup(str);
-    if(!str) return NULL;
+    if (!str) return NULL;
 
     struct elt {
         char *str;
@@ -21,12 +21,11 @@ char **split(const char str[],const char delim[], int *length) {
     *length = 0;
 
     char *sep = strtok(_str, delim);
-    while(sep) {
-
+    while (sep) {
         tmp = malloc(sizeof(struct elt));
-        if(!tmp) continue;
+        if (!tmp) continue;
 
-        if(!head)
+        if (!head)
             head = tmp;
         else
             end->next = tmp;
@@ -35,19 +34,19 @@ char **split(const char str[],const char delim[], int *length) {
         tmp->next = NULL;
         end = tmp;
 
-        (*length) ++;
+        (*length)++;
         sep = strtok(NULL, delim);
     }
 
     free(_str);
 
-    char ** tab = NULL;
-    if(*length != 0)
+    char **tab = NULL;
+    if (*length != 0)
         tab = malloc(sizeof(char *) * *length);
 
-    for(int i = 0; head; i++) {
-        if(tab)
-            tab[ i ] = head->str;
+    for (int i = 0; head; i++) {
+        if (tab)
+            tab[i] = head->str;
         tmp = head->next;
         free(head);
         head = tmp;
@@ -57,12 +56,11 @@ char **split(const char str[],const char delim[], int *length) {
 }
 
 int main() {
-
     int len = 0;
 
-    char **tab = split("split_string_by_delimiter_test", "_" ,&len);
+    char **tab = split("split_string_by_delimiter_test", "_", &len);
 
-    for(int i = 0; i < len; i++) {
+    for (int i = 0; i < len; i++) {
         printf("%s\n", tab[i]);
         free(tab[i]);
     }

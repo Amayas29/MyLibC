@@ -7,6 +7,6 @@
 */
 
 /* Split a string according to the delimiter */
-char **split(const char str[],const char delim[], int *length);
+char **split(const char str[], const char delim[], int *length);
 
 #endif
