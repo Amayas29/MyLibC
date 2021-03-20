@@ -4,11 +4,11 @@
 #include <stdlib.h>
 #include <string.h>
 
-char **split(const char str[], const char delim[], int *length) {
+char **split_l(const char str[], const char delim[], int *length) {
     if (!str || !delim) return NULL;
 
     char *_str = strdup(str);
-    if (!str) return NULL;
+    if (!_str) return NULL;
 
     struct elt {
         char *str;
@@ -55,10 +55,61 @@ char **split(const char str[], const char delim[], int *length) {
     return tab;
 }
 
+char **split_r(const char str[], const char delim[], int *length) {
+    if (!str || !delim) return NULL;
+
+    char *_str = strdup(str);
+    if (!_str) {
+        fprintf(stderr, "Allocation error\n");
+        return NULL;
+    }
+
+    *length = 0;
+
+    const int INCREMENT = 10;
+    int max_lenght = INCREMENT;
+
+    char **tab = malloc(sizeof(char *) * max_lenght);
+    if (!tab) {
+        fprintf(stderr, "Allocation error\n");
+        free(_str);
+        return NULL;
+    }
+
+    char *sep = strtok(_str, delim);
+
+    while (sep) {
+        if (*length == max_lenght) {
+            max_lenght += INCREMENT;
+            tab = realloc(tab, max_lenght * sizeof(char *));
+        }
+
+        tab[*length] = strdup(sep);
+
+        if (!tab[*length]) {
+            fprintf(stderr, "Allocation error\n");
+            for (int j = 0; j < *length; j++)
+                free((tab[j]));
+            free(tab);
+            free(_str);
+            *length = 0;
+            return NULL;
+        }
+
+        (*length)++;
+        sep = strtok(NULL, delim);
+    }
+
+    free(_str);
+    tab = realloc(tab, *length * sizeof(char *));
+
+    return tab;
+}
+
 int main() {
     int len = 0;
 
-    char **tab = split("split_string_by_delimiter_test", "_", &len);
+    char **tab = split_r("split_string_by_delimiter_test", "_", &len);
 
     for (int i = 0; i < len; i++) {
         printf("%s\n", tab[i]);
