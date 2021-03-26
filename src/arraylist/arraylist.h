@@ -7,7 +7,7 @@ typedef struct list {
 } List;
 
 typedef struct arraylist {
-    List *data;
+    List *list;
     int length;
 } ArrayList;
 
