@@ -1,9 +1,9 @@
-#ifndef __ARRAY_LIST_H__
-#define __ARRAY_LIST_H__
+#ifndef ARRAY_LIST_H_
+#define ARRAY_LIST_H_
 
 typedef struct list {
     void *data;
-    typedef struct list *next;
+    struct list *next;
 } List;
 
 typedef struct arraylist {
