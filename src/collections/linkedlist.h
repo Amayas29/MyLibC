@@ -1,31 +1,32 @@
 #ifndef LINKED_LIST_H_
 #define LINKED_LIST_H_
 
-typedef struct list {
+typedef struct element {
     void *data;
-    struct list *next;
-} List;
+    struct element *next;
+} Element;
 
 typedef struct linkedlist {
-    List *list;
+    Element *_last;
+    Element *elements;
     int size;
 } LinkedList;
 
 LinkedList *create();
-void add(LinkedList *linkedList, void *element);
-void add_index(LinkedList *linkedList, int index, void *element);
-void clear(LinkedList *linkedList);
-LinkedList *clone(LinkedList *linkedList);
-int contains(LinkedList *linkedList, void *element);
-void *get(LinkedList *linkedList, int index);
-int index_of(LinkedList *linkedList, void *element);
-void *remove_index(LinkedList *linkedList, int index);
-int remove(LinkedList *linkedList, void *element);
+void add(LinkedList *linkedlist, void *data);
+void add_index(LinkedList *linkedlist, int index, void *data);
+void clear(LinkedList *linkedlist);
+LinkedList *clone(LinkedList *linkedlist);
+int contains(LinkedList *linkedlist, void *data);
+void *get(LinkedList *linkedlist, int index);
+int index_of(LinkedList *linkedlist, void *data);
 void *remove_index(LinkedList *linkedlist, int index);
-void *set(LinkedList *linkedList, int index, void *element);
-LinkedList *sub_list(LinkedList *linkedList, int start, int end);
-LinkedList *filter(LinkedList *linkedList, int (*property)(void *data));
-void *map(LinkedList *linkedList, void (*map_fct)(void *data));
-LinkedList *quicksort(LinkedList *linkedList, int (*compare)(void *data_1, void *data_2));
+int remove(LinkedList *linkedlist, void *data);
+void *remove_index(LinkedList *linkedlist, int index);
+void *set(LinkedList *linkedlist, int index, void *data);
+LinkedList *sub_list(LinkedList *linkedlist, int start, int end);
+LinkedList *filter(LinkedList *linkedlist, int (*property)(void *data));
+void *map(LinkedList *linkedlist, void (*map_fct)(void *data));
+LinkedList *quicksort(LinkedList *linkedlist, int (*compare)(void *data_1, void *data_2));
 
 #endif
