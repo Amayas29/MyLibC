@@ -5,7 +5,7 @@
 
 #include "../error/lib_error.h"
 
-LinkedList *lk_create(void (*free_data)(void *data), void *(*copy_data)(void *data), void (*print_data)(void *data)) {
+LinkedList *lk_create(void (*free_data)(void *data), void *(*copy_data)(void *data), void (*print_data)(void *data), int (*compare_data)(void *data_1, void *data_2)) {
     if (!free_data || !copy_data || !print_data) {
         raise_error(NullPointerError, __FILE__, __FUNCTION__, __LINE__, "Functions of data does not exist");
         return NULL;
@@ -21,6 +21,7 @@ LinkedList *lk_create(void (*free_data)(void *data), void *(*copy_data)(void *da
     linkedlist->elements = NULL;
     linkedlist->size = 0;
 
+    linkedlist->compare_data = compare_data;
     linkedlist->free_data = free_data;
     linkedlist->copy_data = copy_data;
     linkedlist->print_data = print_data;
@@ -135,7 +136,7 @@ LinkedList *lk_clone(LinkedList *linkedlist) {
         return NULL;
     }
 
-    LinkedList *cloned = lk_create(linkedlist->free_data, linkedlist->copy_data, linkedlist->print_data);
+    LinkedList *cloned = lk_create(linkedlist->free_data, linkedlist->copy_data, linkedlist->print_data, linkedlist->compare_data);
     if (!cloned) return NULL;
 
     cloned->_last = NULL;
@@ -160,7 +161,7 @@ int lk_contains(LinkedList *linkedlist, void *data) {
     if (!data) return 0;
 
     Element *curr = linkedlist->elements;
-    for (; curr && curr->data != data; curr = curr->next) continue;
+    for (; curr && linkedlist->compare_data(curr->data, data); curr = curr->next) continue;
 
     return curr != NULL;
 }
@@ -171,13 +172,17 @@ void *lk_get(LinkedList *linkedlist, int index) {
         return NULL;
     }
 
-    if (index < 0 || index > linkedlist->size) {
+    if (index < 0 || index >= linkedlist->size) {
         raise_error(IndexOutOfBoundsError, __FILE__, __FUNCTION__, __LINE__, NULL);
         return NULL;
     }
 
     Element *curr = linkedlist->elements;
     for (; curr && index > 0; curr = curr->next, index--) continue;
+
+    printf("%d\n", index);
+    linkedlist->print_data(curr->data);
+    printf("\n\n");
 
     if (curr) return curr->data;
 
@@ -200,7 +205,7 @@ int lk_index_of(LinkedList *linkedlist, void *data) {
     if (!curr) return -1;
 
     int index = 0;
-    for (; curr && curr->data != data; curr = curr->next, index++) continue;
+    for (; curr && linkedlist->compare_data(curr->data, data); curr = curr->next, index++) continue;
 
     if (!curr) return -1;
     return index;

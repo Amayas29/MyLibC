@@ -13,9 +13,10 @@ typedef struct linkedlist {
     void (*free_data)(void *data);
     void *(*copy_data)(void *data);
     void (*print_data)(void *data);
+    int (*compare_data)(void *data_1, void *data_2);
 } LinkedList;
 
-LinkedList *lk_create(void (*free_data)(void *data), void *(*copy_data)(void *data), void (*print_data)(void *data));
+LinkedList *lk_create(void (*free_data)(void *data), void *(*copy_data)(void *data), void (*print_data)(void *data), int (*compare_data)(void *data_1, void *data_2));
 void lk_add(LinkedList *linkedlist, void *data);
 void lk_add_index(LinkedList *linkedlist, int index, void *data);
 void lk_clear(LinkedList *linkedlist);
