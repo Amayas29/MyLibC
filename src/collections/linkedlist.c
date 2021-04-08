@@ -7,13 +7,13 @@
 
 LinkedList *lk_create(void (*free_data)(void *data), void *(*copy_data)(void *data), void (*print_data)(void *data)) {
     if (!free_data || !copy_data || !print_data) {
-        raise(NullPointerError, __FILE__, __FUNCTION__, __LINE__, "Functions of data does not exist");
+        raise_error(NullPointerError, __FILE__, __FUNCTION__, __LINE__, "Functions of data does not exist");
         return NULL;
     }
 
     LinkedList *linkedlist = malloc(sizeof(LinkedList));
     if (!linkedlist) {
-        raise(AllocationError, __FILE__, __FUNCTION__, __LINE__, NULL);
+        raise_error(AllocationError, __FILE__, __FUNCTION__, __LINE__, NULL);
         return NULL;
     }
 
@@ -30,24 +30,25 @@ LinkedList *lk_create(void (*free_data)(void *data), void *(*copy_data)(void *da
 
 void lk_add(LinkedList *linkedlist, void *data) {
     if (!linkedlist) {
-        raise(NullPointerError, __FILE__, __FUNCTION__, __LINE__, "The linkedlist does not exist");
+        raise_error(NullPointerError, __FILE__, __FUNCTION__, __LINE__, "The linkedlist does not exist");
         return;
     }
 
     if (!data) {
-        raise(NullPointerError, __FILE__, __FUNCTION__, __LINE__, "The data does not exist");
+        raise_error(NullPointerError, __FILE__, __FUNCTION__, __LINE__, "The data does not exist");
         return;
     }
 
     Element *element = malloc(sizeof(Element));
 
     if (!element) {
-        raise(AllocationError, __FILE__, __FUNCTION__, __LINE__, NULL);
+        raise_error(AllocationError, __FILE__, __FUNCTION__, __LINE__, NULL);
         return;
     }
 
     element->data = data;
     element->next = NULL;
+    linkedlist->size++;
 
     if (linkedlist->_last) {
         linkedlist->_last->next = element;
@@ -55,35 +56,37 @@ void lk_add(LinkedList *linkedlist, void *data) {
         return;
     }
 
-    linkedlist->size++;
     linkedlist->_last = element;
     linkedlist->elements = element;
 }
 
 void lk_add_index(LinkedList *linkedlist, int index, void *data) {
-    if (index < 0 || index >= linkedlist->size) {
-        raise(IndexOutOfBoundsError, __FILE__, __FUNCTION__, __LINE__, NULL);
+    if (index < 0 || index > linkedlist->size) {
+        raise_error(IndexOutOfBoundsError, __FILE__, __FUNCTION__, __LINE__, NULL);
         return;
     }
 
     Element *current = linkedlist->elements;
-    for (; current && index > 0; current = current->next, index--) continue;
+    Element *pred = NULL;
+    for (; current && index > 0; pred = current, current = current->next, index--) continue;
 
     if (!current && index > 0) {
-        raise(IndexOutOfBoundsError, __FILE__, __FUNCTION__, __LINE__, NULL);
+        raise_error(IndexOutOfBoundsError, __FILE__, __FUNCTION__, __LINE__, NULL);
         return;
     }
 
     Element *element = malloc(sizeof(Element));
 
     if (!element) {
-        raise(AllocationError, __FILE__, __FUNCTION__, __LINE__, NULL);
+        raise_error(AllocationError, __FILE__, __FUNCTION__, __LINE__, NULL);
         return;
     }
 
+    element->data = data;
+
     // Add in head
     if (current == linkedlist->elements) {
-        element->next = current;
+        element->next = linkedlist->elements;
         linkedlist->elements = element;
 
         linkedlist->size++;
@@ -95,18 +98,17 @@ void lk_add_index(LinkedList *linkedlist, int index, void *data) {
     }
 
     // If add in end : refresh last
-    if (!current->next)
+    if (!pred->next)
         linkedlist->_last = element;
 
-    element->data = data;
-    element->next = current->next;
-    current->next = element;
+    element->next = pred->next;
+    pred->next = element;
     linkedlist->size++;
 }
 
 void lk_clear(LinkedList *linkedlist) {
     if (!linkedlist) {
-        raise(NullPointerError, __FILE__, __FUNCTION__, __LINE__, "The linkedlist does not exist");
+        raise_error(NullPointerError, __FILE__, __FUNCTION__, __LINE__, "The linkedlist does not exist");
         return;
     }
 
@@ -129,7 +131,7 @@ void lk_clear(LinkedList *linkedlist) {
 
 LinkedList *lk_clone(LinkedList *linkedlist) {
     if (!linkedlist) {
-        raise(NullPointerError, __FILE__, __FUNCTION__, __LINE__, "The linkedlist does not exist");
+        raise_error(NullPointerError, __FILE__, __FUNCTION__, __LINE__, "The linkedlist does not exist");
         return NULL;
     }
 
@@ -151,7 +153,7 @@ LinkedList *lk_clone(LinkedList *linkedlist) {
 
 int lk_contains(LinkedList *linkedlist, void *data) {
     if (!linkedlist) {
-        raise(NullPointerError, __FILE__, __FUNCTION__, __LINE__, "The linkedlist does not exist");
+        raise_error(NullPointerError, __FILE__, __FUNCTION__, __LINE__, "The linkedlist does not exist");
         return 0;
     }
 
@@ -165,12 +167,12 @@ int lk_contains(LinkedList *linkedlist, void *data) {
 
 void *lk_get(LinkedList *linkedlist, int index) {
     if (!linkedlist) {
-        raise(NullPointerError, __FILE__, __FUNCTION__, __LINE__, "The linkedlist does not exist");
+        raise_error(NullPointerError, __FILE__, __FUNCTION__, __LINE__, "The linkedlist does not exist");
         return NULL;
     }
 
-    if (index < 0 || index >= linkedlist->size) {
-        raise(IndexOutOfBoundsError, __FILE__, __FUNCTION__, __LINE__, NULL);
+    if (index < 0 || index > linkedlist->size) {
+        raise_error(IndexOutOfBoundsError, __FILE__, __FUNCTION__, __LINE__, NULL);
         return NULL;
     }
 
@@ -179,18 +181,18 @@ void *lk_get(LinkedList *linkedlist, int index) {
 
     if (curr) return curr->data;
 
-    raise(IndexOutOfBoundsError, __FILE__, __FUNCTION__, __LINE__, NULL);
+    raise_error(IndexOutOfBoundsError, __FILE__, __FUNCTION__, __LINE__, NULL);
     return NULL;
 }
 
 int lk_index_of(LinkedList *linkedlist, void *data) {
     if (!linkedlist) {
-        raise(NullPointerError, __FILE__, __FUNCTION__, __LINE__, "The linkedlist does not exist");
+        raise_error(NullPointerError, __FILE__, __FUNCTION__, __LINE__, "The linkedlist does not exist");
         return -1;
     }
 
     if (!data) {
-        raise(NullPointerError, __FILE__, __FUNCTION__, __LINE__, "The data does not exist");
+        raise_error(NullPointerError, __FILE__, __FUNCTION__, __LINE__, "The data does not exist");
         return -1;
     }
 
@@ -198,15 +200,15 @@ int lk_index_of(LinkedList *linkedlist, void *data) {
     if (!curr) return -1;
 
     int index = 0;
-    for (; curr && curr->data != data; curr->next, index++) continue;
+    for (; curr && curr->data != data; curr = curr->next, index++) continue;
 
     if (!curr) return -1;
     return index;
 }
 
 void *lk_remove_index(LinkedList *linkedlist, int index) {
-    if (index < 0 || index >= linkedlist->size) {
-        raise(IndexOutOfBoundsError, __FILE__, __FUNCTION__, __LINE__, NULL);
+    if (index < 0 || index > linkedlist->size) {
+        raise_error(IndexOutOfBoundsError, __FILE__, __FUNCTION__, __LINE__, NULL);
         return NULL;
     }
 
@@ -214,7 +216,7 @@ void *lk_remove_index(LinkedList *linkedlist, int index) {
     for (; current && index > 0; current = current->next, index--) continue;
 
     if (!current && index > 0) {
-        raise(IndexOutOfBoundsError, __FILE__, __FUNCTION__, __LINE__, NULL);
+        raise_error(IndexOutOfBoundsError, __FILE__, __FUNCTION__, __LINE__, NULL);
         return NULL;
     }
 
@@ -240,6 +242,7 @@ void *lk_remove_index(LinkedList *linkedlist, int index) {
 
     // TODO
     linkedlist->size--;
+    return NULL;
 }
 
 int lk_remove(LinkedList *linkedlist, void *data);
@@ -251,7 +254,7 @@ LinkedList *lk_quicksort(LinkedList *linkedlist, int (*compare)(void *data_1, vo
 
 void lk_free(LinkedList *linkedlist) {
     if (!linkedlist) {
-        raise(NullPointerError, __FILE__, __FUNCTION__, __LINE__, "The linkedlist does not exist");
+        raise_error(NullPointerError, __FILE__, __FUNCTION__, __LINE__, "The linkedlist does not exist");
         return;
     }
 
