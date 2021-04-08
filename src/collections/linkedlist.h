@@ -15,21 +15,21 @@ typedef struct linkedlist {
     void (*print_data)(void *data);
 } LinkedList;
 
-LinkedList *create_linkedlist(void (*free_data)(void *data), void *(*copy_data)(void *data), void (*print_data)(void *data));
-void add_linkedlist(LinkedList *linkedlist, void *data);
-void add_index_linkedlist(LinkedList *linkedlist, int index, void *data);
-void clear_linkedlist(LinkedList *linkedlist);
-LinkedList *clone_linkedlist(LinkedList *linkedlist);
-int contains_linkedlist(LinkedList *linkedlist, void *data);
-void *get_linkedlist(LinkedList *linkedlist, int index);
-int index_of_linkedlist(LinkedList *linkedlist, void *data);
-int remove_linkedlist(LinkedList *linkedlist, void *data);
-void *remove_index_linkedlist(LinkedList *linkedlist, int index);
-void *set_linkedlist(LinkedList *linkedlist, int index, void *data);
-LinkedList *sub_linkedlist(LinkedList *linkedlist, int start, int end);
-LinkedList *filter_linkedlist(LinkedList *linkedlist, int (*property)(void *data));
-void *map_linkedlist(LinkedList *linkedlist, void (*map_fct)(void *data));
-LinkedList *quicksort_linkedlist(LinkedList *linkedlist, int (*compare)(void *data_1, void *data_2));
-void free_linkedlist(LinkedList *linkedlist);
+LinkedList *lk_create(void (*free_data)(void *data), void *(*copy_data)(void *data), void (*print_data)(void *data));
+void lk_add(LinkedList *linkedlist, void *data);
+void lk_add_index(LinkedList *linkedlist, int index, void *data);
+void lk_clear(LinkedList *linkedlist);
+LinkedList *lk_clone(LinkedList *linkedlist);
+int lk_contains(LinkedList *linkedlist, void *data);
+void *lk_get(LinkedList *linkedlist, int index);
+int lk_index_of(LinkedList *linkedlist, void *data);
+int lk_remove(LinkedList *linkedlist, void *data);
+void *lk_remove_index(LinkedList *linkedlist, int index);
+void *lk_set(LinkedList *linkedlist, int index, void *data);
+LinkedList *lk_sub(LinkedList *linkedlist, int start, int end);
+LinkedList *lk_filter(LinkedList *linkedlist, int (*property)(void *data));
+void *lk_map(LinkedList *linkedlist, void (*map_fct)(void *data));
+LinkedList *lk_quicksort(LinkedList *linkedlist, int (*compare)(void *data_1, void *data_2));
+void lk_free(LinkedList *linkedlist);
 
 #endif

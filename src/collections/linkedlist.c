@@ -5,7 +5,7 @@
 
 #include "../error/lib_error.h"
 
-LinkedList *create_linkedlist(void (*free_data)(void *data), void *(*copy_data)(void *data), void (*print_data)(void *data)) {
+LinkedList *lk_create(void (*free_data)(void *data), void *(*copy_data)(void *data), void (*print_data)(void *data)) {
     if (!free_data || !copy_data || !print_data) {
         raise(NullPointerError, __FILE__, __FUNCTION__, __LINE__, "Functions of data does not exist");
         return NULL;
@@ -28,7 +28,7 @@ LinkedList *create_linkedlist(void (*free_data)(void *data), void *(*copy_data)(
     return linkedlist;
 }
 
-void add_linkedlist(LinkedList *linkedlist, void *data) {
+void lk_add(LinkedList *linkedlist, void *data) {
     if (!linkedlist) {
         raise(NullPointerError, __FILE__, __FUNCTION__, __LINE__, "The linkedlist does not exist");
         return;
@@ -60,7 +60,7 @@ void add_linkedlist(LinkedList *linkedlist, void *data) {
     linkedlist->elements = element;
 }
 
-void add_index_linkedlist(LinkedList *linkedlist, int index, void *data) {
+void lk_add_index(LinkedList *linkedlist, int index, void *data) {
     if (index < 0 || index >= linkedlist->size) {
         raise(IndexOutOfBoundsError, __FILE__, __FUNCTION__, __LINE__, NULL);
         return;
@@ -104,7 +104,7 @@ void add_index_linkedlist(LinkedList *linkedlist, int index, void *data) {
     linkedlist->size++;
 }
 
-void clear_linkedlist(LinkedList *linkedlist) {
+void lk_clear(LinkedList *linkedlist) {
     if (!linkedlist) {
         raise(NullPointerError, __FILE__, __FUNCTION__, __LINE__, "The linkedlist does not exist");
         return;
@@ -127,29 +127,29 @@ void clear_linkedlist(LinkedList *linkedlist) {
     linkedlist->elements = NULL;
 }
 
-LinkedList *clone_linkedlist(LinkedList *linkedlist) {
+LinkedList *lk_clone(LinkedList *linkedlist) {
     if (!linkedlist) {
         raise(NullPointerError, __FILE__, __FUNCTION__, __LINE__, "The linkedlist does not exist");
         return NULL;
     }
 
-    LinkedList *cloned = create_linkedlist(linkedlist->free_data, linkedlist->copy_data, linkedlist->print_data);
+    LinkedList *cloned = lk_create(linkedlist->free_data, linkedlist->copy_data, linkedlist->print_data);
     if (!cloned) return NULL;
 
     cloned->_last = NULL;
 
     for (Element *curr = linkedlist->elements; curr; curr = curr->next)
-        add_linkedlist(cloned, linkedlist->copy_data(curr->data));
+        lk_add(cloned, linkedlist->copy_data(curr->data));
 
     if (cloned->size != linkedlist->size) {
-        free_linkedlist(cloned);
+        lk_free(cloned);
         return NULL;
     }
 
     return cloned;
 }
 
-int contains_linkedlist(LinkedList *linkedlist, void *data) {
+int lk_contains(LinkedList *linkedlist, void *data) {
     if (!linkedlist) {
         raise(NullPointerError, __FILE__, __FUNCTION__, __LINE__, "The linkedlist does not exist");
         return 0;
@@ -163,7 +163,7 @@ int contains_linkedlist(LinkedList *linkedlist, void *data) {
     return curr != NULL;
 }
 
-void *get_linkedlist(LinkedList *linkedlist, int index) {
+void *lk_get(LinkedList *linkedlist, int index) {
     if (!linkedlist) {
         raise(NullPointerError, __FILE__, __FUNCTION__, __LINE__, "The linkedlist does not exist");
         return NULL;
@@ -183,7 +183,7 @@ void *get_linkedlist(LinkedList *linkedlist, int index) {
     return NULL;
 }
 
-int index_of_linkedlist(LinkedList *linkedlist, void *data) {
+int lk_index_of(LinkedList *linkedlist, void *data) {
     if (!linkedlist) {
         raise(NullPointerError, __FILE__, __FUNCTION__, __LINE__, "The linkedlist does not exist");
         return -1;
@@ -204,7 +204,7 @@ int index_of_linkedlist(LinkedList *linkedlist, void *data) {
     return index;
 }
 
-void *remove_index_linkedlist(LinkedList *linkedlist, int index) {
+void *lk_remove_index(LinkedList *linkedlist, int index) {
     if (index < 0 || index >= linkedlist->size) {
         raise(IndexOutOfBoundsError, __FILE__, __FUNCTION__, __LINE__, NULL);
         return NULL;
@@ -242,10 +242,19 @@ void *remove_index_linkedlist(LinkedList *linkedlist, int index) {
     linkedlist->size--;
 }
 
-int remove_linkedlist(LinkedList *linkedlist, void *data);
-void *set_linkedlist(LinkedList *linkedlist, int index, void *data);
-LinkedList *sub_linkedlist(LinkedList *linkedlist, int start, int end);
-LinkedList *filter_linkedlist(LinkedList *linkedlist, int (*property)(void *data));
-void *map_linkedlist(LinkedList *linkedlist, void (*map_fct)(void *data));
-LinkedList *quicksort_linkedlist(LinkedList *linkedlist, int (*compare)(void *data_1, void *data_2));
-void free_linkedlist(LinkedList *linkedlist);
+int lk_remove(LinkedList *linkedlist, void *data);
+void *lk_set(LinkedList *linkedlist, int index, void *data);
+LinkedList *lk_sub(LinkedList *linkedlist, int start, int end);
+LinkedList *lk_filter(LinkedList *linkedlist, int (*property)(void *data));
+void *lk_map(LinkedList *linkedlist, void (*map_fct)(void *data));
+LinkedList *lk_quicksort(LinkedList *linkedlist, int (*compare)(void *data_1, void *data_2));
+
+void lk_free(LinkedList *linkedlist) {
+    if (!linkedlist) {
+        raise(NullPointerError, __FILE__, __FUNCTION__, __LINE__, "The linkedlist does not exist");
+        return;
+    }
+
+    lk_clear(linkedlist);
+    free(linkedlist);
+}
