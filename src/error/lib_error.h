@@ -6,10 +6,13 @@
 typedef enum {
     NullPointerError,
     AllocationError,
-    IndexError,
+    IndexOutOfBoundsError,
 } error_t;
 
-const char *ERROR_MESSAGES[] = {"NullPointerError : The pointer is NULL", "AllocationError : an allocation error has occurred", "IndexError : "};
+const char *ERROR_MESSAGES[] = {
+    "NullPointerError : The pointer is NULL",
+    "AllocationError : an allocation error has occurred",
+    "IndexOutOfBoundsError : acces to an out of bounds index"};
 
 void raise(error_t err, const char *FILE, const char *FUNCTION, const int LINE, char *details);
 
