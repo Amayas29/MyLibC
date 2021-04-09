@@ -66,6 +66,16 @@ int lk_add(LinkedList *linkedlist, void *data) {
 }
 
 int lk_add_index(LinkedList *linkedlist, int index, void *data) {
+    if (!linkedlist) {
+        raise_error(NullPointerError, __FILE__, __FUNCTION__, __LINE__, "The linkedlist does not exist");
+        return 0;
+    }
+
+    if (!data) {
+        raise_error(NullPointerError, __FILE__, __FUNCTION__, __LINE__, "The data does not exist");
+        return 0;
+    }
+
     if (index < 0 || index > linkedlist->size) {
         raise_error(IndexOutOfBoundsError, __FILE__, __FUNCTION__, __LINE__, NULL);
         return 0;
