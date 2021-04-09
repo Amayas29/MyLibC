@@ -68,7 +68,7 @@ int ar_add(ArrayList *arraylist, void *data) {
 
 int ar_add_index(ArrayList *arraylist, int index, void *data) {
     if (!arraylist) {
-        raise_error(NullPointerError, __FILE__, __FUNCTION__, __LINE__, "The linkedlist does not exist");
+        raise_error(NullPointerError, __FILE__, __FUNCTION__, __LINE__, "The arraylist does not exist");
         return 0;
     }
 
@@ -109,7 +109,7 @@ int ar_add_index(ArrayList *arraylist, int index, void *data) {
 
 void ar_clear(ArrayList *arraylist) {
     if (!arraylist) {
-        raise_error(NullPointerError, __FILE__, __FUNCTION__, __LINE__, "The linkedlist does not exist");
+        raise_error(NullPointerError, __FILE__, __FUNCTION__, __LINE__, "The arraylist does not exist");
         return;
     }
 
@@ -158,7 +158,7 @@ int ar_contains(ArrayList *arraylist, void *data) {
 
 void *ar_get(ArrayList *arraylist, int index) {
     if (!arraylist) {
-        raise_error(NullPointerError, __FILE__, __FUNCTION__, __LINE__, "The linkedlist does not exist");
+        raise_error(NullPointerError, __FILE__, __FUNCTION__, __LINE__, "The arraylist does not exist");
         return NULL;
     }
 
@@ -189,7 +189,7 @@ int ar_index_of(ArrayList *arraylist, void *data) {
 
 void *ar_remove_index(ArrayList *arraylist, int index) {
     if (!arraylist) {
-        raise_error(NullPointerError, __FILE__, __FUNCTION__, __LINE__, "The linkedlist does not exist");
+        raise_error(NullPointerError, __FILE__, __FUNCTION__, __LINE__, "The arraylist does not exist");
         return NULL;
     }
 
@@ -208,11 +208,32 @@ void *ar_remove_index(ArrayList *arraylist, int index) {
     return data;
 }
 
-int ar_remove(ArrayList *arraylist, void *data);
+int ar_remove(ArrayList *arraylist, void *data) {
+    if (!arraylist) {
+        raise_error(NullPointerError, __FILE__, __FUNCTION__, __LINE__, "The arraylist does not exist");
+        return 0;
+    }
+
+    if (!data) {
+        raise_error(NullPointerError, __FILE__, __FUNCTION__, __LINE__, "The data does not exist");
+        return 0;
+    }
+
+    for (int i = 0; i < arraylist->size; i++)
+        if (arraylist->compare_data(arraylist->array[i].data, data) == 0) {
+            void *del = ar_remove_index(arraylist, i);
+            if (del != data)
+                arraylist->free_data(del);
+
+            return 1;
+        }
+
+    return 0;
+}
 
 void *ar_set(ArrayList *arraylist, int index, void *data) {
     if (!arraylist) {
-        raise_error(NullPointerError, __FILE__, __FUNCTION__, __LINE__, "The linkedlist does not exist");
+        raise_error(NullPointerError, __FILE__, __FUNCTION__, __LINE__, "The arraylist does not exist");
         return NULL;
     }
 
@@ -233,7 +254,7 @@ void *ar_set(ArrayList *arraylist, int index, void *data) {
 
 ArrayList *ar_filter(ArrayList *arraylist, int (*property)(void *data)) {
     if (!arraylist) {
-        raise_error(NullPointerError, __FILE__, __FUNCTION__, __LINE__, "The linkedlist does not exist");
+        raise_error(NullPointerError, __FILE__, __FUNCTION__, __LINE__, "The arraylist does not exist");
         return NULL;
     }
 
@@ -257,7 +278,7 @@ ArrayList *ar_filter(ArrayList *arraylist, int (*property)(void *data)) {
 
 void ar_map(ArrayList *arraylist, void (*map_fct)(void *data)) {
     if (!arraylist) {
-        raise_error(NullPointerError, __FILE__, __FUNCTION__, __LINE__, "The linkedlist does not exist");
+        raise_error(NullPointerError, __FILE__, __FUNCTION__, __LINE__, "The arraylist does not exist");
         return;
     }
 
@@ -274,7 +295,7 @@ void ar_quicksort(ArrayList *arraylist, int (*compare)(void *data_1, void *data_
 
 void ar_free(ArrayList *arraylist) {
     if (!arraylist) {
-        raise_error(NullPointerError, __FILE__, __FUNCTION__, __LINE__, "The linkedlist does not exist");
+        raise_error(NullPointerError, __FILE__, __FUNCTION__, __LINE__, "The arraylist does not exist");
         return;
     }
 
