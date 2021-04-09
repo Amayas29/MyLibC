@@ -187,7 +187,27 @@ int ar_index_of(ArrayList *arraylist, void *data) {
     return -1;
 }
 
-void *ar_remove_index(ArrayList *arraylist, int index);
+void *ar_remove_index(ArrayList *arraylist, int index) {
+    if (!arraylist) {
+        raise_error(NullPointerError, __FILE__, __FUNCTION__, __LINE__, "The linkedlist does not exist");
+        return NULL;
+    }
+
+    if (index < 0 || index >= arraylist->size) {
+        raise_error(IndexOutOfBoundsError, __FILE__, __FUNCTION__, __LINE__, NULL);
+        return NULL;
+    }
+
+    void *data = arraylist->array[index].data;
+    arraylist->array[index].data = NULL;
+
+    for (int i = index; i < arraylist->size - 1; i++)
+        arraylist->array[i].data = arraylist->array[i + 1].data;
+
+    arraylist->size--;
+    return data;
+}
+
 int ar_remove(ArrayList *arraylist, void *data);
 
 void *ar_set(ArrayList *arraylist, int index, void *data) {
