@@ -220,17 +220,39 @@ void *ar_set(ArrayList *arraylist, int index, void *data) {
     return old_data;
 }
 
-ArrayList *ar_filter(ArrayList *arraylist, int (*property)(void *data));
-
-void ar_map(ArrayList *arraylist, void (*map_fct)(void *data)) {
+ArrayList *ar_filter(ArrayList *arraylist, int (*property)(void *data)) {
     if (!arraylist) {
         raise_error(NullPointerError, __FILE__, __FUNCTION__, __LINE__, "The linkedlist does not exist");
         return NULL;
     }
 
+    if (!property) {
+        raise_error(NullPointerError, __FILE__, __FUNCTION__, __LINE__, "The filter function does not exist");
+        return NULL;
+    }
+
+    ArrayList *filtred = ar_create(arraylist->free_data, arraylist->copy_data, arraylist->print_data, arraylist->compare_data);
+    if (!filtred) return NULL;
+
+    for (int i = 0; i < arraylist->size; i++)
+        if (property(arraylist->array[i].data))
+            if (!ar_add(filtred, arraylist->copy_data(arraylist->array[i].data))) {
+                ar_free(filtred);
+                return NULL;
+            }
+
+    return filtred;
+}
+
+void ar_map(ArrayList *arraylist, void (*map_fct)(void *data)) {
+    if (!arraylist) {
+        raise_error(NullPointerError, __FILE__, __FUNCTION__, __LINE__, "The linkedlist does not exist");
+        return;
+    }
+
     if (!map_fct) {
         raise_error(NullPointerError, __FILE__, __FUNCTION__, __LINE__, "The map function does not exist");
-        return NULL;
+        return;
     }
 
     for (int i = 0; i < arraylist->size; i++)
