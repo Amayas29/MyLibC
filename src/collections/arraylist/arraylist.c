@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "../error/lib_error.h"
+#include "../../error/lib_error.h"
 
 ArrayList *ar_create(void (*free_data)(void *data), void *(*copy_data)(void *data), void (*print_data)(void *data), int (*compare_data)(void *data_1, void *data_2)) {
     if (!free_data || !copy_data || !print_data || !compare_data) {

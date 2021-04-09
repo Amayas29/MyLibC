@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "../error/lib_error.h"
+#include "../../error/lib_error.h"
 
 static Element *el_quicksort(Element *head, Element *tail, int (*compare_data)(void *data_1, void *data_2));
 static Element *el_partition(Element **liste, void *pivot, Element **end_left, Element **end_right, int (*compare_data)(void *data_1, void *data_2));
