@@ -9,7 +9,7 @@ static Element *el_quicksort(Element *head, Element *tail, int (*compare_data)(v
 static Element *el_partition(Element **liste, void *pivot, Element **end_left, Element **end_right, int (*compare_data)(void *data_1, void *data_2));
 
 LinkedList *lk_create(void (*free_data)(void *data), void *(*copy_data)(void *data), void (*print_data)(void *data), int (*compare_data)(void *data_1, void *data_2)) {
-    if (!free_data || !copy_data || !print_data) {
+    if (!free_data || !copy_data || !print_data || !compare_data) {
         raise_error(NullPointerError, __FILE__, __FUNCTION__, __LINE__, "Functions of data does not exist");
         return NULL;
     }
