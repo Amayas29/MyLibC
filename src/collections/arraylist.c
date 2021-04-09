@@ -205,6 +205,11 @@ void *ar_set(ArrayList *arraylist, int index, void *data) {
         return NULL;
     }
 
+    if (!data) {
+        raise_error(NullPointerError, __FILE__, __FUNCTION__, __LINE__, "The data does not exist");
+        return 0;
+    }
+
     if (index < 0 || index >= arraylist->size) {
         raise_error(IndexOutOfBoundsError, __FILE__, __FUNCTION__, __LINE__, NULL);
         return NULL;
