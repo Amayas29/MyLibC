@@ -117,6 +117,8 @@ void ar_clear(ArrayList *arraylist) {
         arraylist->free_data(arraylist->array[i].data);
         arraylist->array[i].data = NULL;
     }
+
+    arraylist->size = 0;
 }
 
 ArrayList *ar_clone(ArrayList *arraylist) {
