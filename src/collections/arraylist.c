@@ -130,21 +130,12 @@ ArrayList *ar_clone(ArrayList *arraylist) {
     ArrayList *cloned = ar_create(arraylist->free_data, arraylist->copy_data, arraylist->print_data, arraylist->compare_data);
     if (!cloned) return NULL;
 
-    if (cloned->capacity < arraylist->size) {
-        cloned->array = realloc(cloned->array, arraylist->size * sizeof(Element));
-        if (!cloned->array) {
-            raise_error(AllocationError, __FILE__, __FUNCTION__, __LINE__, NULL);
+    for (int i = 0; i < arraylist->size; i++)
+        if (!ar_add(cloned, arraylist->copy_data(arraylist->array[i].data))) {
             ar_free(cloned);
             return NULL;
         }
 
-        cloned->capacity = arraylist->size;
-    }
-
-    for (int i = 0; i < arraylist->size; i++)
-        cloned->array[i].data = arraylist->copy_data(arraylist->array[i].data);
-
-    cloned->size = arraylist->size;
     return cloned;
 }
 
