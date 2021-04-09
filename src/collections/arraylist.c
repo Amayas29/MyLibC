@@ -193,7 +193,7 @@ int ar_index_of(ArrayList *arraylist, void *data) {
     for (int i = 0; i < arraylist->size; i++)
         if (arraylist->compare_data(arraylist->array[i].data, data) == 0) return i;
 
-    return 0;
+    return -1;
 }
 
 void *ar_remove_index(ArrayList *arraylist, int index);
