@@ -5,6 +5,9 @@
 
 #include "../../error/lib_error.h"
 
+static int el_partition(Element *array, int start, int end, int (*compare_data)(void *data_1, void *data_2));
+static void el_quicksort(Element *array, int start, int end, int (*compare_data)(void *data_1, void *data_2));
+
 ArrayList *ar_create(void (*free_data)(void *data), void *(*copy_data)(void *data), void (*print_data)(void *data), int (*compare_data)(void *data_1, void *data_2)) {
     if (!free_data || !copy_data || !print_data || !compare_data) {
         raise_error(NullPointerError, __FILE__, __FUNCTION__, __LINE__, "Functions of data does not exist");
@@ -291,7 +294,14 @@ void ar_map(ArrayList *arraylist, void (*map_fct)(void *data)) {
         map_fct(arraylist->array[i].data);
 }
 
-void ar_quicksort(ArrayList *arraylist, int (*compare)(void *data_1, void *data_2));
+void ar_quicksort(ArrayList *arraylist) {
+    if (!arraylist) {
+        raise_error(NullPointerError, __FILE__, __FUNCTION__, __LINE__, "The arraylist does not exist");
+        return;
+    }
+
+    el_quicksort(arraylist->array, 0, arraylist->size - 1, arraylist->compare_data);
+}
 
 void ar_free(ArrayList *arraylist) {
     if (!arraylist) {
@@ -302,4 +312,33 @@ void ar_free(ArrayList *arraylist) {
     ar_clear(arraylist);
     free(arraylist->array);
     free(arraylist);
+}
+
+static void el_quicksort(Element *array, int start, int end, int (*compare_data)(void *data_1, void *data_2)) {
+    if (start >= end) return;
+
+    int pivot = el_partition(array, start, end, compare_data);
+    el_quicksort(array, start, pivot - 1, compare_data);
+    el_quicksort(array, pivot + 1, end, compare_data);
+}
+
+static int el_partition(Element *array, int start, int end, int (*compare_data)(void *data_1, void *data_2)) {
+    Element pivot = array[end];
+    int i = start - 1;
+
+    Element tmp;
+
+    for (int j = start; j < end; j++)
+        if (compare_data(array[j].data, pivot.data) < 0) {
+            i++;
+            tmp = array[i];
+            array[i] = array[j];
+            array[j] = tmp;
+        }
+
+    tmp = array[i+1];
+    array[i+1] = array[end];
+    array[end] = tmp;
+
+    return i + 1;
 }

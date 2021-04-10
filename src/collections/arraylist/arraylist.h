@@ -31,7 +31,7 @@ int ar_remove(ArrayList *arraylist, void *data);
 void *ar_set(ArrayList *arraylist, int index, void *data);
 ArrayList *ar_filter(ArrayList *arraylist, int (*property)(void *data));
 void ar_map(ArrayList *arraylist, void (*map_fct)(void *data));
-void ar_quicksort(ArrayList *arraylist, int (*compare)(void *data_1, void *data_2));
+void ar_quicksort(ArrayList *arraylist);
 void ar_free(ArrayList *arraylist);
 
 #endif
