@@ -25,7 +25,7 @@ void tu_mult_tuple(Tuple *self, Tuple *other);
 
 void tu_mult(Tuple *self, void *k);
 void tu_add(Tuple *self, void *k);
-void tu_mult(Tuple *self, void *k);
+void tu_sub(Tuple *self, void *k);
 void tu_div(Tuple *self, void *k);
 
 #endif
