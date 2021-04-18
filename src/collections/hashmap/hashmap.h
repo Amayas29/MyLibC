@@ -11,10 +11,16 @@ typedef struct hashmap {
     int size;
     int capacity;
     Element **harray;
-    int (*hash)(void *data);
+    double (*key_function)(void *data);
+    void (*free_key)(void *key);
+    void (*free_data)(void *data);
+    void *(*clone_data)(void *data);
+    void *(*clone_key)(void *key);
+    int (*compare_key)(void *key_1, void *key_2);
+    int (*compare_data)(void *data_1, void *data_2);
 } HashMap;
 
-HashMap *hm_create(int capacity, int (*hash)(void *data));
+HashMap *hm_create(int capacity, double (*key_function)(void *data), void (*free_key)(void *key), void (*free_data)(void *data), void *(*clone_key)(void *key), void *(*clone_data)(void *data), int (*compare_key)(void *key_1, void *key_2), int (*compare_data)(void *data_1, void *data_2));
 void hm_clear(HashMap *hashmap);
 HashMap *hm_clone(HashMap *hashmap);
 int hm_contains_key(HashMap *hashmap, void *key);
