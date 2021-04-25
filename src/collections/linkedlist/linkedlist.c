@@ -221,6 +221,11 @@ int lk_index_of(LinkedList *linkedlist, void *data) {
 }
 
 void *lk_remove_index(LinkedList *linkedlist, int index) {
+    if (!linkedlist) {
+        raise_error(NullPointerError, __FILE__, __FUNCTION__, __LINE__, "The linkedlist does not exist");
+        return -1;
+    }
+
     if (index < 0 || index >= linkedlist->size) {
         raise_error(IndexOutOfBoundsError, __FILE__, __FUNCTION__, __LINE__, NULL);
         return NULL;
