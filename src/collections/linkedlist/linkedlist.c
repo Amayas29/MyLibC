@@ -431,7 +431,6 @@ void lk_free(LinkedList *linkedlist) {
     free(linkedlist);
 }
 
-// Must change: Use swap ! it's a quicksort not a fusionsort
 static Element *el_quicksort(Element *head, Element *tail, int (*compare_data)(void *data_1, void *data_2)) {
     if (!head || head == tail)
         return head;
