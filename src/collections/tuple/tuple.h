@@ -1,13 +1,10 @@
 #ifndef TUPLE_H_
 #define TUPLE_H_
 
-typedef struct element {
-    void *data;
-} Element;
+#include "../arraylist/arraylist.h"
 
 typedef struct tuple {
-    Element *array;
-    int size;
+    ArrayList *array;
     void (*add_data)(void *one, void *two);
     void (*sub_data)(void *one, void *two);
     void (*mult_data)(void *one, void *two);
