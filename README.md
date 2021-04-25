@@ -37,3 +37,5 @@ Some useful programs and functions in C
     * linkedlist : For linkedlists *V1*
     * hashmap : For the data dictionaries *(In progress)*
     * tuple : For tuples *(In progress)*
+    * queue : For queue *V1*
+    * stack : For stacks *V1*
