@@ -300,8 +300,10 @@ int lk_remove(LinkedList *linkedlist, void *data) {
     linkedlist->size--;
     Element *deleted = pred->next;
     pred->next = deleted->next;
+    
     if (data != deleted->data)
         linkedlist->free_data(deleted->data);
+
     free(deleted);
     return 1;
 }
