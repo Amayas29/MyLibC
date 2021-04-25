@@ -1,6 +1,6 @@
 # MyLibC
 
-- *Version 1.1*
+- *Version 1.2*
 - *2021*
 
 Some useful programs and functions in C
